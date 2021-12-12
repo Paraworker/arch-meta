@@ -1,6 +1,7 @@
 # Maintainer: Paraworker <paraworker@gmail.com>
 
 pkgname=mutter-artifact
+_pkgname=mutter
 pkgver=41.0
 pkgrel=1
 pkgdesc="A window manager for GNOME (with MR1441)"
@@ -17,24 +18,24 @@ checkdepends=(xorg-server-xvfb wireplumber python-dbusmock)
 provides=(mutter)
 conflicts=(mutter)
 groups=(gnome)
-source=("$pkgname::git+https://gitlab.gnome.org/GNOME/mutter.git"
+source=("git+https://gitlab.gnome.org/GNOME/mutter.git"
         "https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/1441.patch")
 
 sha256sums=('SKIP'
             'SKIP')
 
 pkgver() {
-  cd $pkgname
+  cd $_pkgname
   git describe --tags | sed 's/-/+/g'
 }
 
 prepare() {
-  cd "$srcdir/$pkgname"
+  cd "$srcdir/$_pkgname"
   patch -p1 < "$srcdir/1441.patch"
 }
 
 build() {
-  arch-meson $pkgname build \
+  arch-meson $_pkgname build \
     -D egl_device=true \
     -D wayland_eglstream=true \
     -D installed_tests=false \
