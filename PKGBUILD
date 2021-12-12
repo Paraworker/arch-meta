@@ -1,7 +1,4 @@
 # Maintainer: Paraworker <paraworker@gmail.com>
-# Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
-# Contributor: Ionut Biru <ibiru@archlinux.org>
-# Contributor: Michael Kanis <mkanis_at_gmx_dot_de>
 
 pkgname=mutter-artifact
 pkgver=41.0
@@ -16,7 +13,7 @@ depends=(dconf gobject-introspection-runtime gsettings-desktop-schemas
          xorg-xwayland graphene libxkbfile)
 makedepends=(gobject-introspection git egl-wayland meson xorg-server
              wayland-protocols)
-checkdepends=(xorg-server-xvfb pipewire-media-session python-dbusmock)
+checkdepends=(xorg-server-xvfb wireplumber python-dbusmock)
 provides=(mutter)
 conflicts=(mutter)
 groups=(gnome)
@@ -28,7 +25,7 @@ sha256sums=('SKIP'
 
 pkgver() {
   cd $pkgname
-  git describe --tags | sed 's/[^-]*-g/r&/;s/-/+/g'
+  git describe --tags | sed 's/-/+/g'
 }
 
 prepare() {
@@ -37,35 +34,12 @@ prepare() {
 }
 
 build() {
-  CFLAGS="${CFLAGS/-O2/-O3} -fno-semantic-interposition"
-  LDFLAGS+=" -Wl,-Bsymbolic-functions"
   arch-meson $pkgname build \
     -D egl_device=true \
     -D wayland_eglstream=true \
     -D installed_tests=false \
     -D profiler=false
   meson compile -C build
-}
-
-_check() (
-  mkdir -p -m 700 "${XDG_RUNTIME_DIR:=$PWD/runtime-dir}"
-  glib-compile-schemas "${GSETTINGS_SCHEMA_DIR:=$PWD/build/data}"
-  export XDG_RUNTIME_DIR GSETTINGS_SCHEMA_DIR
-
-  pipewire &
-  _p1=$!
-
-  pipewire-media-session &
-  _p2=$!
-
-  trap "kill $_p1 $_p2; wait" EXIT
-
-  meson test -C build --print-errorlogs
-)
-
-check() {
-  dbus-run-session xvfb-run -s '-nolisten local' \
-    bash -c "$(declare -f _check); _check"
 }
 
 package() {
