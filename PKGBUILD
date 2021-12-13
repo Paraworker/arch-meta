@@ -2,7 +2,7 @@
 
 pkgname=mutter-artifact
 _pkgname=mutter
-pkgver=41.0
+pkgver=41.0+277+g1c5613728
 pkgrel=1
 pkgdesc="A window manager for GNOME (with MR1441)"
 url="https://gitlab.gnome.org/GNOME/mutter"
@@ -14,7 +14,7 @@ depends=(dconf gobject-introspection-runtime gsettings-desktop-schemas
          xorg-xwayland graphene libxkbfile)
 makedepends=(gobject-introspection git egl-wayland meson xorg-server
              wayland-protocols)
-checkdepends=(xorg-server-xvfb wireplumber python-dbusmock)
+checkdepends=(xorg-server-xvfb wireplumber pipewire-pulse pipewire-jack pipewire-alsa python-dbusmock)
 provides=(mutter)
 conflicts=(mutter)
 groups=(gnome)
