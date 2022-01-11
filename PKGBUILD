@@ -2,7 +2,7 @@
 
 pkgname=mutter-artifact
 _pkgname=mutter
-pkgver=41.0+277+g1c5613728
+pkgver=42.alpha
 pkgrel=1
 pkgdesc="A window manager for GNOME (with MR1441)"
 url="https://gitlab.gnome.org/GNOME/mutter"
