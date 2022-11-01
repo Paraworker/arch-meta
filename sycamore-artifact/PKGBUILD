@@ -1,0 +1,56 @@
+# Maintainer: Paraworker <paraworker@gmail.com>
+# Contributor: Paraworker <paraworker@gmail.com>
+
+pkgname=sycamore-artifact
+_pkgname=sycamore
+pkgver=v0.2+1+g463f7c7
+pkgrel=1
+license=('MIT')
+pkgdesc='A Wayland compositor'
+url='https://github.com/Paraworker/sycamore'
+arch=('x86_64')
+
+depends=(
+    'libinput'
+    'libxkbcommon'
+    'wayland'
+    'wlroots-artifact'
+)
+
+makedepends=(
+    'cmake'
+)
+
+provides=(
+    'sycamore'
+)
+
+source=("git+https://github.com/Paraworker/sycamore.git"
+        "https://github.com/Paraworker/sycamore/pull/4.patch")
+
+sha256sums=('SKIP'
+            'SKIP')
+
+pkgver() {
+  cd $_pkgname
+  git describe --tags | sed 's/-/+/g'
+}
+
+prepare() {
+  cd "$_pkgname"
+  patch -p1 < "$srcdir/4.patch"
+}
+
+build() {
+    cmake -B build -S "$_pkgname" \
+        -DCMAKE_BUILD_TYPE='Release' \
+        -DCMAKE_INSTALL_PREFIX='/usr' \
+        -Wno-dev
+    make -C build
+}
+
+package() {
+  make -C build DESTDIR="$pkgdir" install
+  install -Dm644 "$_pkgname/sycamore.desktop" -t "$pkgdir/usr/share/wayland-sessions/"
+  install -Dm644 "$_pkgname/LICENSE" -t "$pkgdir/usr/share/licenses/$_pkgname/"
+}
