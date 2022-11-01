@@ -1,2 +1,2 @@
-# mutter-artifact
-AUR package for mutter with some Merge requests
+# Arch-meta
+My AUR packages
