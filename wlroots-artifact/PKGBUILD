@@ -2,7 +2,7 @@
 
 pkgname=wlroots-artifact
 _pkgname=wlroots
-pkgver=0.15.0+496+gf83b3809
+pkgver=0.17.0+134+ga0b1329e
 pkgrel=1
 license=('MIT')
 pkgdesc='Modular Wayland compositor library'
@@ -10,6 +10,8 @@ url='https://gitlab.freedesktop.org/wlroots/wlroots'
 arch=('x86_64')
 
 depends=(
+    'hwdata'
+    'libdisplay-info'
     'libglvnd'
     'libinput'
     'libliftoff'
@@ -49,11 +51,11 @@ options=(
 )
 
 source=("git+https://gitlab.freedesktop.org/wlroots/wlroots.git"
-        "https://gitlab.freedesktop.org/wlroots/wlroots/-/merge_requests/3640.patch"
+        #"https://gitlab.freedesktop.org/wlroots/wlroots/-/merge_requests/4321.patch"
         )
 
 sha256sums=('SKIP'
-            'SKIP'
+            #'SKIP'
             )
 
 pkgver() {
@@ -63,7 +65,7 @@ pkgver() {
 
 prepare() {
   cd "$srcdir/$_pkgname"
-  patch -p1 < "$srcdir/3640.patch"
+  #patch -p1 < "$srcdir/4321.patch"
 }
 
 build() {

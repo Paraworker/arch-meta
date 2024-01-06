@@ -3,7 +3,7 @@
 
 pkgname=sycamore-artifact
 _pkgname=sycamore
-pkgver=v0.2+1+g463f7c7
+pkgver=v0.3+45+gea04ac5
 pkgrel=1
 license=('MIT')
 pkgdesc='A Wayland compositor'
@@ -26,10 +26,12 @@ provides=(
 )
 
 source=("git+https://github.com/Paraworker/sycamore.git"
-        "https://github.com/Paraworker/sycamore/pull/4.patch")
+        "https://github.com/Paraworker/sycamore/pull/17.patch"
+        )
 
 sha256sums=('SKIP'
-            'SKIP')
+            'SKIP'
+            )
 
 pkgver() {
   cd $_pkgname
@@ -38,7 +40,7 @@ pkgver() {
 
 prepare() {
   cd "$_pkgname"
-  patch -p1 < "$srcdir/4.patch"
+  patch -p1 < "$srcdir/17.patch"
 }
 
 build() {
